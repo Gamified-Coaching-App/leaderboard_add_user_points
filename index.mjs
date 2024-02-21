@@ -13,7 +13,7 @@ export async function handler(event) {
         // update aggregate_skills_season based on the new values
         await updateAggregateSkillsSeason(tableName, userId);
 
-        const entries = await fetchAllLeaderboardEntries();
+        const entries = await fetchAllLeaderboardEntriesBucket(userId);
         const updatedEntries = await updatePositions(entries);
         console.log("Positions updated for ", updatedEntries.length, "users.");
 
@@ -65,8 +65,7 @@ async function updateAggregateSkillsSeason(tableName, userId) {
     }
 }
 
-async function fetchAllLeaderboardEntries(newData) {
-    const { user_id } = newData;
+async function fetchAllLeaderboardEntriesBucket(user_id) {
     // Get user_id's bucket_id
     const userParams = {
         TableName: "leaderboard",
