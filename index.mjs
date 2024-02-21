@@ -78,7 +78,7 @@ async function fetchAllLeaderboardEntriesBucket(user_id) {
 
     const bucket_id = userData.Item.bucket_id;
 
-    // Retrieve relevant data from leaderboard
+    // retrieve relevant data from leaderboard
     const params = {
         TableName: "leaderboard",
         FilterExpression: "user_id = :user_id AND bucket_id = :bucket_id",
