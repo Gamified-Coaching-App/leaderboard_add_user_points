@@ -50,7 +50,7 @@ async function updateAggregateSkillsSeason(tableName, userId) {
 
     if (result.Item) {
         const { endurance_season, strength_season } = result.Item;
-        const aggregate_skills_season = (endurance_season + strength_season) / 2;
+        const aggregate_skills_season = (endurance_season + strength_season);
 
         await documentClient.update({
             TableName: tableName,
