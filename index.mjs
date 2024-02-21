@@ -66,7 +66,7 @@ async function updateAggregateSkillsSeason(tableName, userId) {
 }
 
 async function fetchAllLeaderboardEntriesBucket(user_id) {
-    // Get user_id's bucket_id
+    // get user_id's bucket_id
     const userParams = {
         TableName: "leaderboard",
         Key: {
