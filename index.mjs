@@ -121,5 +121,5 @@ async function updatePositions(entries) {
     }
 
     await Promise.all(updates);
-    return updates.map((_, index) => sortedEntries[index].user_id); // Return updated user IDs
+    return updates.map((_, index) => sortedEntries[index].user_id); // return updated user IDs
 }
