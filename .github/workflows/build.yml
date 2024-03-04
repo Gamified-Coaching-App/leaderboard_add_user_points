@@ -68,4 +68,4 @@ jobs:
           aws-region: eu-west-2
 
       - name: Deploy to AWS Lambda
-        run: aws lambda update-function-code --function-name arn:aws:lambda:eu-west-2:123456789012:function:leaderboard_add_user_points --zip-file fileb://lambda.zip
+        run: aws lambda update-function-code --function-name arn:aws:lambda:eu-west-2:123456789012:function:leaderboard_add_user_points --zip-file fileb://./lambda.zip
