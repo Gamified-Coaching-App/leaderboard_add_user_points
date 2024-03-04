@@ -31,7 +31,7 @@ export async function handler(event) {
     };
 }
 
-async function updateEnduranceSeason(tableName, userId, pointsEarned) {
+export async function updateEnduranceSeason(tableName, userId, pointsEarned) {
     await documentClient.update({
         TableName: tableName,
         Key: { 'user_id': userId },
@@ -65,7 +65,7 @@ async function updateAggregateSkillsSeason(tableName, userId) {
     }
 }
 
-async function fetchAllLeaderboardEntriesBucket(user_id) {
+export async function fetchAllLeaderboardEntriesBucket(user_id) {
     // get user_id's bucket_id
     const userParams = {
         TableName: "leaderboard",
@@ -98,7 +98,7 @@ async function fetchAllLeaderboardEntriesBucket(user_id) {
     return entries;
 }
 
-async function updatePositions(entries) {
+export async function updatePositions(entries) {
     const sortedEntries = entries.sort((a, b) => b.aggregate_skills_season - a.aggregate_skills_season);
     const updates = [];
 
