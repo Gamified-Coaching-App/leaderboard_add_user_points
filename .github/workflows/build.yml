@@ -1,3 +1,6 @@
+## Template to use for all Lambda function deployments. 
+## FILL IN FUCNTION ARN IN DEPLLOYMENT STEP!!
+
 name: Deploy Lambda Function
 
 on:
@@ -6,13 +9,11 @@ on:
       - main
 
 jobs:
-  setup:
+  deploy:
     runs-on: ubuntu-latest
-    outputs:
-      node-version: '20'
     steps:
       - uses: actions/checkout@v2
-
+      
       - name: Check working directory
         run: |
           echo "Current working directory:"
@@ -24,41 +25,15 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-
-  test:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
       - name: Install dependencies
         run: npm install
 
       - name: Run tests
         run: npm test
-
-  package:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Package Lambda function
-        run: zip -r lambda.zip . -x '*.git*'
       
-      - name: List files
-        run: ls -la
-
-  deploy:
-    needs: package
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+      - name: Package Lambda function
+        run: 
+          zip -r lambda.zip . -x '*.git*'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -68,4 +43,4 @@ jobs:
           aws-region: eu-west-2
 
       - name: Deploy to AWS Lambda
-        run: aws lambda update-function-code --function-name arn:aws:lambda:eu-west-2:123456789012:function:leaderboard_add_user_points --zip-file fileb://./lambda.zip
+        run: aws lambda update-function-code --function-name arn:aws:lambda:eu-west-2:590183778243:function:leaderboard_add_user_points --zip-file fileb://lambda.zip
