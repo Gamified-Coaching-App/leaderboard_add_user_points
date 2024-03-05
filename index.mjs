@@ -74,29 +74,29 @@ export async function fetchAllLeaderboardEntriesBucket(user_id) {
         }
     };
 
-    const userData = await dynamoDb.get(userParams).promise();
+    const userData = await documentClient.get(userParams).promise(); // Changed dynamoDb to documentClient
 
     const bucket_id = userData.Item.bucket_id;
 
     // retrieve relevant data from leaderboard
     const params = {
         TableName: "leaderboard",
-        FilterExpression: "user_id = :user_id AND bucket_id = :bucket_id",
+        FilterExpression: "bucket_id = :bucket_id",
         ExpressionAttributeValues: {
-            ":user_id": user_id,
             ":bucket_id": bucket_id
         }
     };
     const entries = [];
     let items;
     do {
-        items = await dynamoDb.scan(params).promise();
+        items = await documentClient.scan(params).promise(); // Changed dynamoDb to documentClient
         entries.push(...items.Items);
         params.ExclusiveStartKey = items.LastEvaluatedKey;
     } while (items.LastEvaluatedKey);
     
     return entries;
 }
+
 
 export async function updatePositions(entries) {
     const sortedEntries = entries.sort((a, b) => b.aggregate_skills_season - a.aggregate_skills_season);
