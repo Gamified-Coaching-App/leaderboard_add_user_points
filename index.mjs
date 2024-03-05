@@ -110,7 +110,8 @@ export async function updatePositions(entries) {
             const updateParams = {
                 TableName: "leaderboard",
                 Key: { "user_id": sortedEntries[i].user_id },
-                UpdateExpression: "set position_old = if_not_exists(position_new, :pos), position_new = :newPos",
+                // do not track the old positions
+                // UpdateExpression: "set position_old = if_not_exists(position_new, :pos), position_new = :newPos",
                 ExpressionAttributeValues: {
                     ":pos": newPosition, // default if position_new doesn't exist
                     ":newPos": newPosition,
