@@ -7,21 +7,22 @@ export async function handler(event) {
     const tableName = 'leaderboard';
 
     try {
-        // update endurance_season
         await updateEnduranceSeason(tableName, userId, pointsEarned);
+        console.log("Endurance season updated successfully for userId:", userId);
 
-        // update aggregate_skills_season based on the new values
         await updateAggregateSkillsSeason(tableName, userId);
+        console.log("Aggregate skills season updated successfully for userId:", userId);
 
         const entries = await fetchAllLeaderboardEntriesBucket(userId);
-        const updatedEntries = await updatePositions(entries);
-        console.log("Positions updated for ", updatedEntries.length, "users.");
+        console.log(`Fetched ${entries.length} entries for userId:`, userId);
 
+        const updatedEntries = await updatePositions(entries);
+        console.log("Positions updated successfully for", updatedEntries.length, "users.");
     } catch (error) {
         console.error("Error in handler:", error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: "Failed to update leaderboard." }),
+            body: JSON.stringify({ error: "Failed to update leaderboard due to error: " + error.message }),
         };
     }
 
@@ -30,6 +31,7 @@ export async function handler(event) {
         body: JSON.stringify({ message: "Leaderboard updated successfully." }),
     };
 }
+
 
 export async function updateEnduranceSeason(tableName, userId, pointsEarned) {
     await documentClient.update({
@@ -116,10 +118,10 @@ export async function updatePositions(entries) {
                 ConditionExpression: "attribute_exists(user_id)" // Ensure item exists
             };
 
-            updates.push(dynamoDb.update(updateParams).promise().catch(error => console.error('Update failed for user:', sortedEntries[i].user_id, error)));
+            updates.push(documentClient.update(updateParams).promise().catch(error => console.error('Update failed for user:', sortedEntries[i].user_id, error)));
         }
     }
 
     await Promise.all(updates);
-    return updates.map((_, index) => sortedEntries[index].user_id); // return updated user IDs
+    return updates.map((_, index) => sortedEntries[index].user_id); // return updated user IDs
 }
