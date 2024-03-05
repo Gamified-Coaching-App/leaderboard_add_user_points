@@ -2,12 +2,11 @@
 import AWS from 'aws-sdk';
 import { updateEnduranceSeason, updateAggregateSkillsSeason, updatePositions } from '../index.mjs'; 
 
-// Rewriting Mock setup for AWS SDK based on the learned approach
 jest.mock('aws-sdk', () => {
   const promiseMock = jest.fn();
-  const updateMock = jest.fn().mockReturnThis(); // Enable method chaining by returning 'this'
-  const getMock = jest.fn().mockReturnThis(); // Similarly for get
-  const scanMock = jest.fn().mockReturnThis(); // And for scan
+  const updateMock = jest.fn().mockReturnThis(); 
+  const getMock = jest.fn().mockReturnThis();
+  const scanMock = jest.fn().mockReturnThis();
   
   // Setup the promise method to be part of the chain
   return {
